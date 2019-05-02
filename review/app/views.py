@@ -22,7 +22,7 @@ class ProductView(DetailView):
             form = ReviewForm(self.request.POST or None)  # instance= None
 
         reviews = Review.objects.all().filter(product=self.object.id)
-        context["reviews"] = reviews
+        context['reviews'] = reviews
 
         if 'reviewed_products' in self.request.session and self.object.id in self.request.session['reviewed_products']:
             context["is_review_exist"] = True
@@ -33,33 +33,35 @@ class ProductView(DetailView):
         return context
 
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, **kwargs):
         form = ReviewForm(request.POST or None)
         pk = kwargs['pk']
         if form.is_valid():
             text = request.POST['text']
             product = Product.objects.get(id=pk)
             Review.objects.create(text=text, product=product)
-        else:
-            print(request)
-            return render(request, 'app/product_detail.html', {'form': form})
+        # else:
+        #     print(request)
+        #     return render(request, 'app/product_detail.html', {'form': form})
 
         return redirect('product_detail', pk=pk)
 
-    def post(self, request, *args, **kwargs):
-        form = ReviewForm(self.request.POST or None)
-        pk = kwargs['pk']
-
-        if form.is_valid():
-            text = request.POST['text']
-            product = Product.objects.get(id=pk)
-            Review.objects.create(text=text, product=product)
-
-        if 'reviewed_products' in request.session:
-            value = request.session['reviewed_products']
-            value.append(kwargs['pk'])
-            request.session['reviewed_products'] = value
-        else:
-            request.session['reviewed_products'] = [pk]
-
-        return redirect('product_detail', pk=pk)
+    # def post(self, request, *args, **kwargs):
+    #     form = ReviewForm(self.request.POST or None)
+    #     pk = kwargs['pk']
+    #
+    #     if form.is_valid():
+    #         text = request.POST['text']
+    #         product = Product.objects.get(id=pk)
+    #         Review.objects.create(text=text, product=product)
+    #     else:
+    #         return render(request, 'app/product_detail.html')
+    #
+    #     if 'reviewed_products' in request.session:
+    #         value = request.session['reviewed_products']
+    #         value.append(kwargs['pk'])
+    #         request.session['reviewed_products'] = value
+    #     else:
+    #         request.session['reviewed_products'] = [pk]
+    #
+    #     return redirect('product_detail', pk=pk)
