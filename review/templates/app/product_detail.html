@@ -18,6 +18,7 @@
 
     <form action="{% url 'product_detail' product.id %}" method="POST">
         {% csrf_token %}
+
         {{ form }}
         <br>
         <input type="submit" value="Отправить отзыв"/>

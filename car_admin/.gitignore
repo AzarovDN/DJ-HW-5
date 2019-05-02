@@ -1,0 +1,10 @@
+.idea/
+static/admin/
+static/ckeditor/
+myvenv
+
+
+*.pyc
+
+settings_local.py
+db.sqlite3
